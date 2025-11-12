@@ -115,17 +115,20 @@ const FeatureModal = ({ isOpen, onClose, feature, cardPosition }) => {
                     ✕
                   </motion.button>
 
-                  {/* Feature Image */}
+                  {/* Feature Video */}
                   <motion.div 
-                    className="mb-6"
+                    className="mb-6 aspect-video"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.4 }}
                   >
-                    <img
-                      src={feature.image}
-                      alt={feature.title}
-                      className="w-full h-64 sm:h-80 object-cover rounded-2xl"
+                    <video
+                      src={feature.video}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover rounded-2xl"
                     />
                   </motion.div>
 

@@ -17,10 +17,11 @@ const Features = () => {
   
   const features = useMemo(() => [
     { 
-      image: '/features cards/hyperlocal shortly.jpg', 
+      image: '/features cards/hyperlocal shortly.jpg',
+      video: '/feature cards shortly/hyper local news videos.mp4',
       text: '',
       title: 'Hyperlocal Articles',
-      description: 'Get news that matters to your neighborhood. Our AI-powered system curates stories from your immediate area, ensuring you never miss what\'s happening around you.',
+      description: 'Stay updated with news that truly matters to your community. Our Team curates credible stories from your neighborhood, ensuring you\'re always aware of what\'s happening nearby.',
       highlights: [
         'Location-based news filtering',
         'Real-time local updates',
@@ -29,10 +30,11 @@ const Features = () => {
       ]
     },
     { 
-      image: '/features cards/reels shortly.png', 
+      image: '/features cards/reels shortly.png',
+      video: '/feature cards shortly/short videos video.mp4',
       text: '',
       title: 'Short Video Stories',
-      description: 'Watch engaging video content that delivers news in bite-sized, easy-to-digest formats. Perfect for staying informed on the go.',
+      description: 'Access concise, high-quality video summaries that deliver key updates quickly. Designed for professionals who want clarity and relevance without the noise.',
       highlights: [
         '60-second news summaries',
         'Visual storytelling',
@@ -41,10 +43,11 @@ const Features = () => {
       ]
     },
     { 
-      image: '/features cards/qix shortly.png', 
+      image: '/features cards/qix shortly.png',
+      video: '/feature cards shortly/qix video.mp4',
       text: '',
       title: 'Quick News Cards',
-      description: 'Swipe through beautifully designed news cards that present information clearly and concisely. Get the facts fast.',
+      description: 'Browse through neatly designed news cards that highlight essential facts and context. A streamlined way to stay informed in minutes.',
       highlights: [
         'Card-based interface',
         'Swipe navigation',
@@ -53,10 +56,11 @@ const Features = () => {
       ]
     },
     { 
-      image: '/features cards/explained shortly.png', 
+      image: '/features cards/explained shortly.png',
+      video: '/feature cards shortly/polls videos.mp4',
       text: '',
       title: 'Explained Stories',
-      description: 'Complex topics broken down into simple, understandable explanations. Stay informed without the confusion.',
+      description: 'Understand complex issues with ease. Our in-depth explainers simplify major developments, providing balanced insights and clear takeaways.',
       highlights: [
         'Complex topics simplified',
         'Visual explanations',
@@ -65,10 +69,11 @@ const Features = () => {
       ]
     },
     { 
-      image: '/features cards/daily wrap shortly.png', 
+      image: '/features cards/daily wrap shortly.png',
+      video: '/feature cards shortly/daily wrap video.mp4',
       text: '',
       title: 'Daily Wrap-up',
-      description: 'End your day with a comprehensive summary of everything that happened in your area. Never miss the big picture.',
+      description: 'End your day with a well-rounded summary of the most important local and national events. A smart way to stay informed without scrolling endlessly.',
       highlights: [
         'End-of-day summaries',
         'Top stories compilation',
@@ -77,10 +82,11 @@ const Features = () => {
       ]
     },
     { 
-      image: '/features cards/audio shortly.jpg', 
+      image: '/features cards/audio shortly.jpg',
+      video: '/feature cards shortly/audio video (2).mp4',
       text: '',
       title: 'Audio News',
-      description: 'Listen to your local news while commuting, exercising, or multitasking. High-quality audio journalism for busy lifestyles.',
+      description: 'Stay connected to the news while you\'re on the move. Listen to well-narrated local and national updates, crafted for convenience and clarity.',
       highlights: [
         'Professional narration',
         'Offline listening',
