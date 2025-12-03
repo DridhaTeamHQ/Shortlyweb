@@ -70,10 +70,11 @@ src/
 └── index.css            # Global styles
 
 public/
-├── features cards/      # Feature images
-├── dark mode shortly/   # Dark mode screenshots
-├── light mode shortly/  # Light mode screenshots
-└── logos/              # Logo assets
+├── features cards/           # Feature images
+├── feature cards shortly/    # Feature videos (MP4)
+├── dark mode shortly/        # Dark mode screenshots
+├── light mode shortly/       # Light mode screenshots
+└── logos/                   # Logo assets
 ```
 
 ## 🎯 Sections
@@ -89,8 +90,10 @@ public/
 ### 2. Features
 - Circular 3D gallery
 - Interactive feature cards
-- Hover-to-preview (0.5s delay)
-- Modal with mist glass effect
+- Hover-to-preview (1s delay)
+- Modal with high-quality videos
+- Lazy-loaded video content
+- Loading states & error handling
 - Drag to scroll
 - Theme-specific styling
 
@@ -152,9 +155,12 @@ All components are fully responsive with mobile-first design.
 
 ### Assets
 - Optimized images
+- Video lazy loading (on-demand)
+- Video error handling
+- Loading states for videos
 - Font display: swap
-- Lazy loading
 - Cache headers (1 year)
+- Video range requests enabled
 
 ## 🌐 Browser Support
 
@@ -181,10 +187,11 @@ All components are fully responsive with mobile-first design.
 3. Add section ID for navigation
 4. Update navbar links if needed
 
-### Updating Screenshots
+### Updating Screenshots & Videos
 - Dark mode: `public/dark mode shortly/`
 - Light mode: `public/light mode shortly/`
-- Feature cards: `public/features cards/`
+- Feature card images: `public/features cards/`
+- Feature videos: `public/feature cards shortly/` (MP4 format)
 
 ### Theme Customization
 - Colors: `tailwind.config.js`
@@ -264,5 +271,9 @@ For deployment issues, check:
 
 **Developed by Dridha Technologies**  
 **Version:** 1.0.0  
-**Last Updated:** October 2024
+**Last Updated:** November 2025  
+
+📄 **See also:**
+- [PERFORMANCE.md](./PERFORMANCE.md) - Detailed performance report
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - Deployment guide
 

@@ -152,7 +152,7 @@ const Hero = () => {
               <div className="flex flex-col text-left flex-1">
                 <span className="text-[10px] sm:text-xs text-white/80 font-medium">Download on the</span>
                 <span className="text-base sm:text-lg font-bold text-white leading-tight">App Store</span>
-              </div>
+                </div>
               <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-white/0 group-hover:bg-white/10 transition-all duration-300"></div>
             </motion.a>
 
@@ -179,37 +179,37 @@ const Hero = () => {
               <div className="flex flex-col text-left flex-1">
                 <span className="text-[10px] sm:text-xs text-white/80 font-medium">Get it on</span>
                 <span className="text-base sm:text-lg font-bold text-white leading-tight">Google Play</span>
-              </div>
+                </div>
               <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-white/0 group-hover:bg-white/10 transition-all duration-300"></div>
             </motion.a>
           </motion.div>
+          </motion.div>
         </motion.div>
-      </motion.div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
         style={{ opacity }}
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
           className={`w-6 h-10 border-2 rounded-full flex justify-center ${
             theme === 'light' ? 'border-purple-400/50' : 'border-white/30'
           }`}
-        >
-          <motion.div
-            animate={{ y: [0, 15, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <motion.div
+              animate={{ y: [0, 15, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
             className={`w-1 h-3 rounded-full mt-2 ${
               theme === 'light' ? 'bg-purple-500/60' : 'bg-white/50'
             }`}
-          />
+            />
+          </motion.div>
         </motion.div>
-      </motion.div>
     </section>
   )
 }

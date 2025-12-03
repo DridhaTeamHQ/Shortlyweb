@@ -20,7 +20,7 @@ const WhyHyperLocal = () => {
           className={`${theme === 'light' ? 'text-purple-600/30' : 'text-purple-400/30'}`}
           numCopies={10}
         />
-
+              
         <ScrollVelocity
           texts={['Shortly', 'Hyperlocal News']}
           velocity={-100}

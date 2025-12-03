@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../context/ThemeContext'
 import { triggerHaptic } from '../utils/haptics'
 
 const FeatureModal = ({ isOpen, onClose, feature, cardPosition }) => {
   const { theme } = useTheme()
+  const [videoError, setVideoError] = useState(false)
+  const [videoLoaded, setVideoLoaded] = useState(false)
+
+  // Reset video state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setVideoError(false)
+      setVideoLoaded(false)
+    }
+  }, [isOpen])
 
   if (!feature) return null
 
@@ -27,7 +37,7 @@ const FeatureModal = ({ isOpen, onClose, feature, cardPosition }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-md z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-md z-[9998]"
             onClick={handleClose}
           />
           
@@ -65,22 +75,16 @@ const FeatureModal = ({ isOpen, onClose, feature, cardPosition }) => {
               opacity: { duration: 0.2 },
               borderRadius: { duration: 0.4 }
             }}
+            className="fixed inset-0 flex items-center justify-center p-4 z-[9999] pointer-events-none"
             style={{
               transformStyle: "preserve-3d",
-              perspective: 1500,
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              translateX: "-50%",
-              translateY: "-50%",
-              zIndex: 51
+              perspective: 1500
             }}
-            className="w-full max-w-2xl max-h-[90vh] pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
               {/* Mist Glass Container */}
               <div 
-                className={`rounded-3xl shadow-2xl overflow-hidden ${
+                className={`w-full max-w-2xl max-h-[90vh] rounded-3xl shadow-2xl overflow-hidden pointer-events-auto ${
                   theme === 'light' 
                     ? 'bg-white/80 backdrop-blur-xl border border-white/40' 
                     : 'bg-black/60 backdrop-blur-xl border border-white/10'
@@ -117,19 +121,40 @@ const FeatureModal = ({ isOpen, onClose, feature, cardPosition }) => {
 
                   {/* Feature Video */}
                   <motion.div 
-                    className="mb-6 aspect-video"
+                    className="mb-6 aspect-video relative bg-gray-900/10"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.4 }}
                   >
-                    <video
-                      src={feature.video}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover rounded-2xl"
-                    />
+                    {!videoLoaded && !videoError && (
+                      <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+                      </div>
+                    )}
+                    {videoError ? (
+                      <div className="w-full h-full flex items-center justify-center rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900">
+                        <div className="text-center p-6">
+                          <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                          <p className="text-gray-400">Video unavailable</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <video
+                        src={feature.video}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="metadata"
+                        onLoadedData={() => setVideoLoaded(true)}
+                        onError={() => setVideoError(true)}
+                        className={`w-full h-full object-cover rounded-2xl transition-opacity duration-300 ${
+                          videoLoaded ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    )}
                   </motion.div>
 
                   {/* Feature Content */}
