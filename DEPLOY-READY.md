@@ -182,7 +182,6 @@ npm run build
 
 - **Live Site**: https://shortlynews.netlify.app/
 - **Netlify Dashboard**: https://app.netlify.com/sites/shortlynews
-- **GitHub Repo**: https://github.com/Afzalkhan001/Shortly-website
 
 ---
 
