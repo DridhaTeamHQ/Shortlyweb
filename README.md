@@ -28,7 +28,7 @@ A modern, responsive landing page for Shortly - your hyperlocal news companion a
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/Afzalkhan001/Shortly-website.git
 cd "Shortly website"
 
 # Install dependencies
