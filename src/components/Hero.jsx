@@ -110,8 +110,12 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
         >
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-6 sm:mb-8 display-hero px-4">
-            <span className={theme === 'light' ? 'text-purple-600' : 'text-purple-500'}>Shortly</span>
+          <h1 className="mb-4 sm:mb-6 md:mb-8 px-2 sm:px-4 flex justify-center items-center">
+            <img 
+              src="/logos/Shorlty Latest@4x.png"
+              alt="Shortly"
+              className="h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto max-w-[85vw] object-contain"
+            />
           </h1>
           
           <BlurText
@@ -119,7 +123,7 @@ const Hero = () => {
             delay={50}
             animateBy="words"
             direction="top"
-            className={`text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto px-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}
+            className={`text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 md:mb-10 max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto px-3 sm:px-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}
           />
 
           {/* Download Buttons */}

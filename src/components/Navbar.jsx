@@ -109,12 +109,18 @@ const Navbar = () => {
               aria-label="Go to home"
             >
               <img
-                src={theme === 'light' ? '/logos/logo-on-dark.svg.png' : '/logos/logo-on-light.svg.png'}
+                src={theme === 'light' ? '/logos/logo-on-dark.png' : '/logos/logo-on-white.png'}
                 alt="Shortly logo"
-                className="h-8 sm:h-10 w-auto select-none object-contain"
+                className="select-none"
                 draggable="false"
                 loading="eager"
                 decoding="async"
+                style={{ 
+                  width: '32px', 
+                  height: '32px', 
+                  objectFit: 'contain',
+                  transform: theme === 'dark' ? 'scale(0.85)' : 'scale(1)'
+                }}
               />
             </motion.button>
           </GlassSurface>
