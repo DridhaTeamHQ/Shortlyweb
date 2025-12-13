@@ -24,7 +24,7 @@ function App() {
         <WhyShortly />
       </div>
       <div id="why">
-        <WhyHyperLocal />
+        {/* <WhyHyperLocal /> */}
       </div>
       <div id="footer">
         <Footer />
