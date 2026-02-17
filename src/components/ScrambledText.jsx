@@ -23,10 +23,17 @@ const ScrambledText = ({
     if (!rootRef.current) return;
 
     const split = SplitText.create(rootRef.current.querySelector('p'), {
-      type: 'chars',
-      charsClass: 'char'
+      type: 'words, chars',
+      charsClass: 'char',
+      wordsClass: 'word'
     });
     charsRef.current = split.chars;
+
+    // Keep words together — prevent mid-word line breaks
+    split.words.forEach(w => {
+      w.style.whiteSpace = 'nowrap';
+      w.style.display = 'inline-block';
+    });
 
     charsRef.current.forEach(c => {
       gsap.set(c, {
@@ -39,7 +46,7 @@ const ScrambledText = ({
     let rafId = null;
     const handleMove = e => {
       if (rafId) return;
-      
+
       rafId = requestAnimationFrame(() => {
         charsRef.current.forEach(c => {
           const { left, top, width, height } = c.getBoundingClientRect();
