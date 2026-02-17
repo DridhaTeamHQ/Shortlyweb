@@ -12,7 +12,7 @@ const Footer = () => {
     ],
     Company: [
       { label: 'About', href: '#why-shortly', isHash: true },
-      { label: 'Contact', href: '#footer', isHash: true },
+      { label: 'Contact', href: '/contact', isHash: false },
     ],
     Legal: [
       { label: 'Privacy', href: '/privacy', isHash: false },
