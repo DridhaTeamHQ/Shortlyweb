@@ -8,6 +8,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "vite --host",
+    "news": "node --env-file=.env scripts/ingest.mjs",
+    "news:auto": "node scripts/scheduler.mjs",
     "build": "vite build",
     "build:analyze": "vite build --mode analyze",
     "preview": "vite preview --host",

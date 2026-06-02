@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate, useLocation } from 'react-router-dom'
 import GlassSurface from './GlassSurface'
 import { useTheme } from '../context/ThemeContext'
 import { triggerHaptic } from '../utils/haptics'
@@ -10,6 +11,9 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
     let ticking = false;
@@ -44,34 +48,52 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const doScroll = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (!element) return
+    try {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } catch (_) {
+      const offset = 80
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - offset
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+    }
+  }
+
   const scrollToSection = (sectionId) => {
     triggerHaptic('light') // Haptic feedback on navigation
-    // Close mobile menu first
     setMobileMenuOpen(false)
-    
-    // Give the menu time to close before measuring positions (mobile needs a bit more time)
-    setTimeout(() => {
-      const element = document.getElementById(sectionId)
-      if (!element) return
-
-      // Try native scrollIntoView first (respects scroll-margin-top)
-      try {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      } catch (_) {
-        // Fallback with manual offset
-        const offset = 80
-        const elementPosition = element.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.pageYOffset - offset
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
-      }
-    }, 350)
+    // If we're on another route (e.g. /newsletter), go home first then scroll
+    if (location.pathname !== '/') {
+      navigate('/')
+      setTimeout(() => doScroll(sectionId), 500)
+      return
+    }
+    setTimeout(() => doScroll(sectionId), 350)
   }
+
+  const goToNewsletter = () => {
+    triggerHaptic('light')
+    setMobileMenuOpen(false)
+    navigate('/newsletter')
+    window.scrollTo({ top: 0 })
+  }
+
+  const handleNavClick = (item) => {
+    if (item.route) goToNewsletter()
+    else scrollToSection(item.id)
+  }
+
+  const isItemActive = (item) =>
+    item.route ? location.pathname === item.route : isHome && activeSection === item.id
 
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'features', label: 'Features' },
     { id: 'why-shortly', label: 'What is Shortly' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'contact', label: 'Contact' },
+    { id: 'newsletter', label: 'Newsletter', route: '/newsletter' }
   ]
 
   return (
@@ -146,15 +168,20 @@ const Navbar = () => {
                 {navItems.map((item) => (
                   <motion.button
                     key={item.id}
-                    onClick={() => scrollToSection(item.id)}
+                    onClick={() => handleNavClick(item)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                      activeSection === item.id
+                    className={`px-5 py-2 rounded-full font-medium transition-all duration-300 flex items-center gap-1.5 ${
+                      isItemActive(item)
                       ? theme === 'light' ? 'bg-purple-200 text-purple-800' : 'bg-purple-500/30 text-purple-300'
                       : theme === 'light' ? 'text-gray-700 hover:text-purple-800 hover:bg-purple-100' : 'text-gray-300 hover:text-white hover:bg-white/10'
                     }`}
                   >
+                    {item.route && (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m0 0h2a2 2 0 012 2v9a2 2 0 01-2 2M9 8h6M9 12h3" />
+                      </svg>
+                    )}
                     {item.label}
                   </motion.button>
                 ))}
@@ -359,16 +386,21 @@ const Navbar = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  scrollToSection(item.id);
+                  handleNavClick(item);
                 }}
                 whileTap={{ scale: 0.98 }}
                 type="button"
-                className={`px-4 py-3 rounded-lg font-medium text-left transition-all duration-300 ${
-                  activeSection === item.id
+                className={`px-4 py-3 rounded-lg font-medium text-left transition-all duration-300 flex items-center gap-2 ${
+                  isItemActive(item)
                     ? theme === 'light' ? 'bg-purple-200 text-purple-800' : 'bg-purple-500/30 text-purple-300'
                     : theme === 'light' ? 'text-gray-700 hover:bg-purple-100' : 'text-gray-300 hover:bg-white/10'
                 }`}
               >
+                {item.route && (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m0 0h2a2 2 0 012 2v9a2 2 0 01-2 2M9 8h6M9 12h3" />
+                  </svg>
+                )}
                 {item.label}
               </motion.button>
             ))}

@@ -100,6 +100,15 @@
     will-change: transform;
     transform: translateZ(0);
   }
+
+  /* Hide scrollbar (used by the newsletter category sub-nav) */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
   
   .hover-lift:hover {
     transform: translateY(-0.5rem) translateZ(0);
