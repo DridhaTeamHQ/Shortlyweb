@@ -1,0 +1,32 @@
+.scroll-float {
+  overflow: visible;
+}
+
+.scroll-float-text {
+  display: inline-block;
+  font-weight: inherit;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Ensure gradient text remains visible per-character */
+.scroll-float-text.text-gradient .char {
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Theme-aware solid colors when not using gradient */
+html.dark .scroll-float-text.text-solid {
+  color: #ffffff;
+}
+
+html.light .scroll-float-text.text-solid {
+  color: #111827; /* gray-900 */
+}
+
+.char {
+  display: inline-block;
+}
+

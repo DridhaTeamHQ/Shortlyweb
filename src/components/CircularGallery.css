@@ -1,0 +1,39 @@
+.circular-gallery {
+  /* Slightly oversize the canvas so edge items are not clipped */
+  width: calc(100% + 160px);
+  margin-left: -80px;
+  margin-right: -80px;
+  height: 100%;
+  /* Allow items to extend beyond the container so edges aren't clipped */
+  overflow: visible;
+  cursor: grab;
+  /* Performance optimizations */
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
+}
+
+.circular-gallery:active {
+  cursor: grabbing;
+}
+
+.circular-gallery canvas {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .circular-gallery {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .circular-gallery {
+    height: 350px;
+  }
+}

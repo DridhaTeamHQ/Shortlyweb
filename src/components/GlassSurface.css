@@ -1,0 +1,75 @@
+.glass-surface {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.glass-surface:hover {
+  transform: translateY(-2px);
+}
+
+.glass-surface__filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+.glass-surface__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+/* SVG filter supported browsers */
+.glass-surface--svg {
+  backdrop-filter: var(--filter-id);
+  -webkit-backdrop-filter: var(--filter-id);
+  background: rgba(139, 92, 246, var(--glass-frost, 0.08));
+}
+
+/* Fallback for browsers that don't support SVG filters */
+.glass-surface--fallback {
+  background: rgba(139, 92, 246, 0.1);
+  backdrop-filter: blur(12px) saturate(var(--glass-saturation, 1.2));
+  -webkit-backdrop-filter: blur(12px) saturate(var(--glass-saturation, 1.2));
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 
+    0 4px 16px 0 rgba(139, 92, 246, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Light mode glass surfaces */
+html.light .glass-surface--fallback {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: 
+    0 4px 20px 0 rgba(168, 85, 247, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+/* Additional styling for better visual appearance */
+.glass-surface::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(168, 85, 247, 0.08) 0%,
+    transparent 60%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+}
