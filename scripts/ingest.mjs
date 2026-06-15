@@ -208,7 +208,7 @@ async function writeStories(stories, label) {
     'Write in professional news style, using ONLY the provided text. Never invent facts, numbers, names or quotes.',
     'For each story return:',
     '  "headline": a sharp, specific news headline in active voice, max ~12 words. No outlet names, no clickbait, no questions.',
-    `  "summary": 3-4 sentences in inverted-pyramid news style (most important fact first), neutral and concrete, about ${SUMMARY_MIN}-${SUMMARY_MAX} characters. MUST end on a complete sentence with proper punctuation; never an ellipsis; never exceed ${SUMMARY_MAX} characters.`,
+    `  "summary": 3-4 sentences in inverted-pyramid news style (most important fact first), neutral and concrete, about ${SUMMARY_MIN}-${SUMMARY_MAX} characters. Add real detail from the snippet; never merely restate the headline. MUST end on a complete sentence with proper punctuation; never an ellipsis; never exceed ${SUMMARY_MAX} characters.`,
     '  "tags": 2-3 short topical tags (1-2 words).',
     `  "category": exactly one of ${VALID.join(', ')}.`,
     '  "importance": integer 1-10 judged like a front-page editor. 9-10 = major national/international significance (government, policy, economy, conflict, major incidents, courts, big business). 5-7 = solid everyday news. 1-3 = soft trivia, listicles, evergreen explainers, how-tos, promotional pieces, minor local events or celebrity gossip.',
@@ -230,7 +230,7 @@ async function writeStories(stories, label) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` },
         body: JSON.stringify({
-          model: MODEL, temperature: 0.4, response_format: { type: 'json_object' },
+          model: MODEL, temperature: 0.4, max_tokens: 8000, response_format: { type: 'json_object' },
           messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
         }),
       })
@@ -293,7 +293,12 @@ async function runCategory(catId) {
     const k = it.source + '|' + it.title.toLowerCase()
     if (seen.has(k)) return false
     seen.add(k); return true
-  }).slice(0, MAX_ITEMS)
+  })
+  // Freshness: keep only today's news (last MAX_AGE_HOURS). Fall back to all if a
+  // slow feed has too few recent items, so a category is never left empty.
+  const maxAgeMs = (Number(process.env.MAX_AGE_HOURS) || 30) * 3600 * 1000
+  const fresh = items.filter((it) => Date.now() - toMs(it.pubDate) <= maxAgeMs)
+  items = (fresh.length >= 8 ? fresh : items).slice(0, MAX_ITEMS)
   if (items.length === 0) throw new Error('no items from any source')
 
   const sourcesUsed = new Set(items.map((i) => i.source)).size
@@ -333,14 +338,20 @@ async function runCategory(catId) {
 
   let articles = scored.map((s, i) => {
     const w = written[i] || {}
+    // A real summary: present, substantial, and not just an echo of the headline.
+    const hn = String(w.headline || s.headlines[0]).replace(/[^a-z0-9]/gi, '').toLowerCase()
+    const sn = String(w.summary || '').replace(/[^a-z0-9]/gi, '').toLowerCase()
+    const hasSummary = sn.length >= 80 && sn !== hn && sn.length > hn.length + 15
     const category = VALID.includes(w.category) ? w.category : label
     const importance = Math.max(1, Math.min(10, Math.round(Number(w.importance) || 4)))
     const kind = ['news', 'feature', 'filler'].includes(w.kind) ? w.kind : 'news'
     const ageMin = (tnow - s.latest) / 60000
     return {
       id: `${catId}-${i}`,
+      written: hasSummary,
       headline: (w.headline || s.headlines[0]).trim(),
-      summary: clampSummary(w.summary || s.snippet || s.headlines[0]),
+      // Never show raw article text: only a GPT-written summary, else fall back to the headline.
+      summary: clampSummary(hasSummary ? w.summary : s.headlines[0]),
       category,
       tags: Array.isArray(w.tags) ? w.tags.slice(0, 3) : [],
       sourceCount: s.sourceCount,
@@ -353,12 +364,17 @@ async function runCategory(catId) {
     }
   })
 
-  // 5. Curate: drop clear filler (unless genuinely widely covered), then rank and keep the best.
-  const strong = articles.filter((a) => !(a.kind === 'filler' && a.importance < 5 && a.sourceCount < 2))
-  articles = (strong.length >= 8 ? strong : articles)
+  // 5. Curate: only show GPT-written stories (never raw text), drop clear filler, then rank.
+  const written2 = articles.filter((a) => a.written)
+  const pool = written2.length >= 5 ? written2 : articles
+  const strong = pool.filter((a) => !(a.kind === 'filler' && a.importance < 5 && a.sourceCount < 2))
+  articles = (strong.length >= 5 ? strong : pool)
     .sort((a, b) => b.score - a.score)
     .slice(0, TOP_CLUSTERS)
-    .map((a, i) => ({ ...a, rank: i + 1 }))
+    .map((a, i) => {
+      const { written, ...rest } = a
+      return { ...rest, rank: i + 1 }
+    })
 
   const dropped = scored.length - articles.length
   return { sourcesUsed, total: items.length, clusters: clusters.length, dropped, articles }
