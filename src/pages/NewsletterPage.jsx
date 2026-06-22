@@ -7,6 +7,7 @@ import { triggerHaptic } from '../utils/haptics'
 import { NEWS_CATEGORIES, DEFAULT_CATEGORY, getCategoryMeta } from '../lib/newsCategories'
 import { fetchNewsletter } from '../lib/newsApi'
 import NewsletterSubscribe from '../components/NewsletterSubscribe'
+import ThemeSelector from '../components/ThemeSelector'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 function timeAgo(iso) {
@@ -38,6 +39,9 @@ const NewsletterPage = () => {
   const dark = theme !== 'light'
 
   const [active, setActive] = useState(DEFAULT_CATEGORY)
+  const [subCategories, setSubCategories] = useState([]) // shared theme/subscribe selection
+  const toggleSubCategory = (slug) =>
+    setSubCategories((c) => (c.includes(slug) ? c.filter((x) => x !== slug) : [...c, slug]))
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -250,6 +254,9 @@ const NewsletterPage = () => {
           )}
         </section>
 
+        {/* Select Your Theme */}
+        <ThemeSelector selected={subCategories} onToggle={toggleSubCategory} />
+
         {/* Subscribe */}
         <section id="subscribe" className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 scroll-mt-28">
           <div className="text-center mb-6">
@@ -263,7 +270,7 @@ const NewsletterPage = () => {
               Pick when it lands, what it covers, and how broadly we curate.
             </p>
           </div>
-          <NewsletterSubscribe />
+          <NewsletterSubscribe categories={subCategories} onCategoriesChange={setSubCategories} />
         </section>
       </main>
 

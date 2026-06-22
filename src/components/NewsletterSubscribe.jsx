@@ -12,13 +12,24 @@ import {
 
 const BIWEEKLY_NOTE = 'You will receive editions twice a week (Tuesday & Friday).'
 
-export default function NewsletterSubscribe() {
+export default function NewsletterSubscribe({ categories: categoriesProp, onCategoriesChange }) {
   const { theme } = useTheme()
   const dark = theme !== 'light'
 
+  const controlled = Array.isArray(categoriesProp)
+  const [catState, setCatState] = useState([])
+  const categories = controlled ? categoriesProp : catState
+  const setCategories = (updater) => {
+    if (controlled) {
+      const next = typeof updater === 'function' ? updater(categoriesProp) : updater
+      onCategoriesChange?.(next)
+    } else {
+      setCatState(updater)
+    }
+  }
+
   const [rhythm, setRhythm] = useState('daily')
   const [days, setDays] = useState([]) // weekly weekdays
-  const [categories, setCategories] = useState([])
   const [source, setSource] = useState('top')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
