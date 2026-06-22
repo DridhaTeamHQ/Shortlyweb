@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import NewsletterNav from '../components/NewsletterNav'
 import Footer from '../components/Footer'
@@ -13,6 +14,22 @@ const SERIF = { fontFamily: "'Source Serif 4', Georgia, serif" }
 const SANS = { fontFamily: "'Roboto', system-ui, sans-serif" }
 
 const themeFor = (slug) => NEWSLETTER_THEMES.find((t) => t.slug === slug) || NEWSLETTER_THEMES[0]
+
+// Scroll-reveal: fade + rise as the element enters the viewport (compositor
+// transform/opacity only, so it stays smooth). Fires once.
+function Reveal({ children, delay = 0, className = '' }) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 26 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '0px 0px -80px 0px' }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 // ---- date helpers -----------------------------------------------------------
 const ordinal = (n) => {
@@ -107,7 +124,12 @@ function CategoryHero({ theme }) {
           <Mandala className="pointer-events-none absolute -left-10 -top-10 h-44 w-44 text-white/20" />
           <Mandala className="pointer-events-none absolute -bottom-12 -right-10 h-52 w-52 text-white/15" />
 
-          <div className="relative flex flex-col items-center gap-5 px-6 py-20 text-center sm:py-24">
+          <motion.div
+            className="relative flex flex-col items-center gap-5 px-6 py-20 text-center sm:py-24"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
             <span className="text-[11px] font-semibold uppercase tracking-[0.35em]" style={{ ...SANS, color: d.accent }}>
               ✦ Shortly Edition ✦
             </span>
@@ -128,7 +150,7 @@ function CategoryHero({ theme }) {
             >
               Subscribe
             </Link>
-          </div>
+          </motion.div>
 
           {/* jhalar trim hanging from the hero's bottom edge */}
           <div className="desi-jhalar absolute inset-x-0 bottom-0" style={{ '--jhalar': d.accent }} />
@@ -273,16 +295,20 @@ function Feed({ category, articles }) {
             const rest = gi === 0 ? items.slice(1) : items
             return (
               <section key={label}>
-                <DateHeading>{label}</DateHeading>
+                <Reveal>
+                  <DateHeading>{label}</DateHeading>
+                </Reveal>
                 {featured && (
-                  <div className="mb-6">
+                  <Reveal className="mb-6">
                     <FeaturedCard category={category} article={featured} band={DESI_BANDS[n++ % DESI_BANDS.length]} />
-                  </div>
+                  </Reveal>
                 )}
                 {rest.length > 0 && (
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {rest.map((a) => (
-                      <StoryCard key={a.id} category={category} article={a} band={DESI_BANDS[n++ % DESI_BANDS.length]} />
+                    {rest.map((a, ri) => (
+                      <Reveal key={a.id} className="h-full" delay={Math.min(ri * 0.07, 0.28)}>
+                        <StoryCard category={category} article={a} band={DESI_BANDS[n++ % DESI_BANDS.length]} />
+                      </Reveal>
                     ))}
                   </div>
                 )}
@@ -333,7 +359,13 @@ function Reading({ category, articles, articleId }) {
         </aside>
 
         {/* right: open article */}
-        <article className="min-w-0">
+        <motion.article
+          key={article.id}
+          className="min-w-0"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className="mb-4 flex items-center gap-2 text-[12px] text-gray-500" style={SANS}>
             <Link to={`/newsletter/${category}`} className="font-medium text-[#d81b60] hover:underline">
               ← All {themeFor(category).label} stories
@@ -382,7 +414,7 @@ function Reading({ category, articles, articleId }) {
               <path d="M7 17L17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
-        </article>
+        </motion.article>
       </div>
     </div>
   )
