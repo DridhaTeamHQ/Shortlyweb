@@ -21,7 +21,7 @@
 .nl-banner {
   position: relative;
   z-index: 10;
-  margin-top: -12vh;
+  margin-top: 2vh;
 }
 
 /* Everything after the stack scrolls over the pinned hero on its own bg. */
