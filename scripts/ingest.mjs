@@ -32,43 +32,32 @@ const TOP_CLUSTERS = 14   // stories kept per category after curation
 const SUMMARY_MIN = 360
 const SUMMARY_MAX = 400
 
-const VALID = ['General','India','World','Business','Technology','Sports','Entertainment','Science','Health']
+const VALID = ['National','International','Finance','Sports','Entertainment','Lifestyle','Technology']
 
 // ---- Multi-source feeds per category (best-effort; failures are skipped) ----
+// Keys are the SITE's canonical category slugs (see src/lib/newsletterThemes.js)
+// so each run writes public/data/newsletter/<slug>.json that the page fetches.
 const FEEDS = {
-  top: [
-    ['Times of India', 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms'],
-    ['NDTV',           'https://feeds.feedburner.com/ndtvnews-top-stories'],
-    ['The Hindu',      'https://www.thehindu.com/news/national/feeder/default.rss'],
-    ['Indian Express', 'https://indianexpress.com/feed/'],
-    ['Hindustan Times','https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml'],
-  ],
-  india: [
+  national: [
     ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms'],
     ['NDTV',           'https://feeds.feedburner.com/ndtvnews-india-news'],
     ['The Hindu',      'https://www.thehindu.com/news/national/feeder/default.rss'],
     ['Indian Express', 'https://indianexpress.com/section/india/feed/'],
     ['Hindustan Times','https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml'],
   ],
-  world: [
+  international: [
     ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/296589292.cms'],
     ['NDTV',           'https://feeds.feedburner.com/ndtvnews-world-news'],
     ['The Hindu',      'https://www.thehindu.com/news/international/feeder/default.rss'],
     ['Indian Express', 'https://indianexpress.com/section/world/feed/'],
     ['Hindustan Times','https://www.hindustantimes.com/feeds/rss/world-news/rssfeed.xml'],
   ],
-  business: [
+  finance: [
     ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/1898055.cms'],
     ['NDTV',           'https://feeds.feedburner.com/ndtvprofit-latest'],
     ['The Hindu',      'https://www.thehindu.com/business/feeder/default.rss'],
     ['Indian Express', 'https://indianexpress.com/section/business/feed/'],
     ['Hindustan Times','https://www.hindustantimes.com/feeds/rss/business/rssfeed.xml'],
-  ],
-  technology: [
-    ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/66949542.cms'],
-    ['NDTV',           'https://feeds.feedburner.com/gadgets360-latest'],
-    ['Indian Express', 'https://indianexpress.com/section/technology/feed/'],
-    ['Hindustan Times','https://www.hindustantimes.com/feeds/rss/technology/rssfeed.xml'],
   ],
   sports: [
     ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/4719148.cms'],
@@ -84,21 +73,23 @@ const FEEDS = {
     ['Indian Express', 'https://indianexpress.com/section/entertainment/feed/'],
     ['Hindustan Times','https://www.hindustantimes.com/feeds/rss/entertainment/rssfeed.xml'],
   ],
-  science: [
-    ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/-2128672765.cms'],
-    ['The Hindu',      'https://www.thehindu.com/sci-tech/science/feeder/default.rss'],
-    ['Indian Express', 'https://indianexpress.com/section/technology/science/feed/'],
-  ],
-  health: [
-    ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/3908999.cms'],
-    ['The Hindu',      'https://www.thehindu.com/sci-tech/health/feeder/default.rss'],
+  lifestyle: [
+    ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/2886704.cms'],
+    ['The Hindu',      'https://www.thehindu.com/life-and-style/feeder/default.rss'],
     ['Hindustan Times','https://www.hindustantimes.com/feeds/rss/lifestyle/rssfeed.xml'],
+    ['Indian Express', 'https://indianexpress.com/section/lifestyle/feed/'],
+  ],
+  technology: [
+    ['Times of India', 'https://timesofindia.indiatimes.com/rssfeeds/66949542.cms'],
+    ['NDTV',           'https://feeds.feedburner.com/gadgets360-latest'],
+    ['Indian Express', 'https://indianexpress.com/section/technology/feed/'],
+    ['Hindustan Times','https://www.hindustantimes.com/feeds/rss/technology/rssfeed.xml'],
   ],
 }
 const CATEGORY_LABEL = {
-  top: 'Top Stories', india: 'India', world: 'World', business: 'Business',
-  technology: 'Technology', sports: 'Sports', entertainment: 'Entertainment',
-  science: 'Science', health: 'Health',
+  national: 'National', international: 'International', finance: 'Finance',
+  sports: 'Sports', entertainment: 'Entertainment', lifestyle: 'Lifestyle',
+  technology: 'Technology',
 }
 
 // ---------------- RSS parsing ----------------

@@ -225,7 +225,7 @@ function FeaturedCard({ category, article, band }) {
         {article.summary}
       </p>
       <div className="mt-5">
-        <Sources count={(article.tags?.length || 2) + 3} />
+        <Sources count={article.sourceCount || (article.tags?.length || 2) + 1} />
       </div>
     </Link>
   )
@@ -245,7 +245,7 @@ function StoryCard({ category, article, band }) {
         {article.summary}
       </p>
       <div className="mt-4">
-        <Sources count={(article.tags?.length || 2) + 3} />
+        <Sources count={article.sourceCount || (article.tags?.length || 2) + 1} />
       </div>
     </Link>
   )
@@ -272,8 +272,11 @@ function Feed({ category, articles }) {
       const q = query.toLowerCase()
       list = list.filter((a) => `${a.headline} ${a.summary}`.toLowerCase().includes(q))
     }
-    if (tab === 'quick') list = list.filter((a) => (a.summary || '').length <= 180)
-    if (tab === 'deep') list = list.filter((a) => (a.summary || '').length > 180)
+    // Deep = the big, multi-source / high-importance stories; Quick = the rest.
+    const isDeep = (a) =>
+      a.importance != null ? a.importance >= 7 : (a.summary || '').length > 180
+    if (tab === 'quick') list = list.filter((a) => !isDeep(a))
+    if (tab === 'deep') list = list.filter(isDeep)
     return list
   }, [articles, tab, query])
 
@@ -375,12 +378,14 @@ function Reading({ category, articles, articleId }) {
             {article.headline}
           </h1>
           <div className="mt-3 flex flex-wrap items-center gap-3 text-[13px] text-gray-500" style={SANS}>
-            <span>{article.source}</span>
+            <span>
+              {article.source || `Synthesised from ${article.sourceCount || 'multiple'} sources`}
+            </span>
             <span>·</span>
             <span>{dateLabel(article.publishedAt)}</span>
           </div>
           <div className="mt-5">
-            <Sources count={(article.tags?.length || 2) + 3} />
+            <Sources count={article.sourceCount || (article.tags?.length || 2) + 1} />
           </div>
 
           <div className="mt-8 space-y-5 text-[16px] leading-[1.8] text-gray-700" style={SANS}>
@@ -402,18 +407,24 @@ function Reading({ category, articles, articleId }) {
             </div>
           )}
 
-          <a
-            href={article.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-bold text-white shadow-[0_8px_24px_rgba(216,27,96,0.35)]"
-            style={{ ...SANS, background: 'linear-gradient(135deg, #F4A300, #D81B60)' }}
-          >
-            Read the full story at {article.source}
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M7 17L17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
+          {article.sourceUrl ? (
+            <a
+              href={article.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-bold text-white shadow-[0_8px_24px_rgba(216,27,96,0.35)]"
+              style={{ ...SANS, background: 'linear-gradient(135deg, #F4A300, #D81B60)' }}
+            >
+              Read the full story at {article.source}
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M7 17L17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          ) : (
+            <p className="mt-8 text-[13px] text-gray-500" style={SANS}>
+              ✦ Curated and written by Shortly from {article.sourceCount || 'multiple'} Indian newsrooms.
+            </p>
+          )}
         </motion.article>
       </div>
     </div>
