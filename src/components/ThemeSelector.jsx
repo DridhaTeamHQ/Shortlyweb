@@ -7,8 +7,8 @@ import { NEWSLETTER_THEMES } from '../lib/newsletterThemes'
 // "Select Your Theme" — the category cover-card grid (Figma frame 1:1337).
 // `selected` is an array of category slugs; `onToggle(slug)` adds/removes one.
 export default function ThemeSelector({ selected = [], onToggle }) {
-  const { theme } = useTheme()
-  const dark = theme !== 'light'
+  // The newsletter page follows the light Figma design regardless of the site theme.
+  const dark = false
 
   return (
     <section id="themes" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 scroll-mt-28">

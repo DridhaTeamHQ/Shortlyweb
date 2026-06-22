@@ -13,8 +13,8 @@ import {
 const BIWEEKLY_NOTE = 'You will receive editions twice a week (Tuesday & Friday).'
 
 export default function NewsletterSubscribe({ categories: categoriesProp, onCategoriesChange }) {
-  const { theme } = useTheme()
-  const dark = theme !== 'light'
+  // The newsletter page follows the light Figma design regardless of the site theme.
+  const dark = false
 
   const controlled = Array.isArray(categoriesProp)
   const [catState, setCatState] = useState([])
