@@ -4,10 +4,11 @@ import Footer from '../components/Footer'
 import NewsletterHero from '../components/NewsletterHero'
 import ThemeSelector from '../components/ThemeSelector'
 import NewsletterSubscribe from '../components/NewsletterSubscribe'
-import ScrollStack, { ScrollStackItem } from '../components/ScrollStack'
+import './NewsletterPage.css'
 
 // The newsletter page follows the light Figma design (frame 1:1292):
-//   Hero (+ banner scroll-stack)  ->  Select Your Theme  ->  Subscribe  ->  Footer
+//   Hero (pins + recedes)  ->  collage banner rises over it  ->  Select Your
+//   Theme  ->  Subscribe  ->  Footer.
 const NewsletterPage = () => {
   const [subCategories, setSubCategories] = useState([])
   const toggleSubCategory = (slug) =>
@@ -17,24 +18,16 @@ const NewsletterPage = () => {
     <div className="min-h-screen bg-[#faf9f6] text-gray-900">
       <Navbar />
 
-      {/* Hero + banner stack: scrolling pins/scales the hero back while the
-          collage banner rises and stacks over it. */}
-      <ScrollStack
-        useWindowScroll
-        itemDistance={60}
-        itemStackDistance={24}
-        itemScale={0.03}
-        baseScale={1}
-        stackPosition="16%"
-        scaleEndPosition="6%"
-      >
-        <ScrollStackItem>
+      {/* Hero pins (native sticky) and gently recedes while the collage banner
+          rises and covers it — see NewsletterPage.css. */}
+      <div className="nl-stack">
+        <div className="nl-hero-pin">
           <NewsletterHero />
-        </ScrollStackItem>
+        </div>
 
-        <ScrollStackItem>
+        <div className="nl-banner">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
+            <div className="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5 bg-[#faf9f6]">
               <img
                 src="/newsletter/banner.png"
                 alt="Shortly — national, finance, sports, lifestyle, tech and more"
@@ -42,10 +35,10 @@ const NewsletterPage = () => {
               />
             </div>
           </div>
-        </ScrollStackItem>
-      </ScrollStack>
+        </div>
+      </div>
 
-      <main className="relative">
+      <main className="nl-after">
         <ThemeSelector selected={subCategories} onToggle={toggleSubCategory} />
 
         <section id="subscribe" className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 scroll-mt-28">
@@ -55,11 +48,11 @@ const NewsletterPage = () => {
           </div>
           <NewsletterSubscribe categories={subCategories} onCategoriesChange={setSubCategories} />
         </section>
-      </main>
 
-      <div className="mt-16">
-        <Footer />
-      </div>
+        <div className="mt-16">
+          <Footer />
+        </div>
+      </main>
     </div>
   )
 }
