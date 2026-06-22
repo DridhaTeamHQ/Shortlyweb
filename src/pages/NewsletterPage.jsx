@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext'
 import { triggerHaptic } from '../utils/haptics'
 import { NEWS_CATEGORIES, DEFAULT_CATEGORY, getCategoryMeta } from '../lib/newsCategories'
 import { fetchNewsletter } from '../lib/newsApi'
+import NewsletterSubscribe from '../components/NewsletterSubscribe'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 function timeAgo(iso) {
@@ -247,6 +248,22 @@ const NewsletterPage = () => {
               </motion.div>
             </AnimatePresence>
           )}
+        </section>
+
+        {/* Subscribe */}
+        <section id="subscribe" className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 scroll-mt-28">
+          <div className="text-center mb-6">
+            <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-widest ${dark ? 'bg-white/5 text-purple-300 border border-white/10' : 'bg-purple-100 text-purple-700 border border-purple-200'}`}>
+              Build your edition
+            </span>
+            <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold">
+              Your news, <span className="text-gradient">your rhythm</span>.
+            </h2>
+            <p className={`mt-2 text-sm ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
+              Pick when it lands, what it covers, and how broadly we curate.
+            </p>
+          </div>
+          <NewsletterSubscribe />
         </section>
       </main>
 
