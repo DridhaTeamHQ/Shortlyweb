@@ -11,7 +11,7 @@ export default function ThemeSelector({ selected = [], onToggle }) {
   const dark = false
 
   return (
-    <section id="themes" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 scroll-mt-28">
+    <section id="themes" className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14 mt-16 scroll-mt-28">
       <div className="mb-8">
         <h2 className={`text-4xl sm:text-5xl font-extrabold tracking-tight ${dark ? 'text-white' : 'text-gray-900'}`}>
           Select Your Theme
