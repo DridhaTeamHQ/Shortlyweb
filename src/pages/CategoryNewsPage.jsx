@@ -4,6 +4,7 @@ import NewsletterNav from '../components/NewsletterNav'
 import Footer from '../components/Footer'
 import { fetchNewsletter } from '../lib/newsApi'
 import { NEWSLETTER_THEMES } from '../lib/newsletterThemes'
+import '../styles/desi.css'
 
 // Per-category stories page (Figma frame 1:36) + article reading view (1:529).
 // Feed state:    dark category hero -> search + tabs -> date-grouped story cards
@@ -61,36 +62,73 @@ function Sources({ count = 5 }) {
   )
 }
 
+// A faint mandala drawn in SVG, parked in the hero corners.
+function Mandala({ className }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth="1.2">
+      <circle cx="50" cy="50" r="46" />
+      <circle cx="50" cy="50" r="34" />
+      <circle cx="50" cy="50" r="20" />
+      {Array.from({ length: 16 }).map((_, i) => {
+        const a = (i * Math.PI) / 8
+        return <line key={i} x1="50" y1="50" x2={50 + 46 * Math.cos(a)} y2={50 + 46 * Math.sin(a)} />
+      })}
+      {Array.from({ length: 16 }).map((_, i) => {
+        const a = (i * Math.PI) / 8
+        return <circle key={`p${i}`} cx={50 + 34 * Math.cos(a)} cy={50 + 34 * Math.sin(a)} r="3" />
+      })}
+    </svg>
+  )
+}
+
 function CategoryHero({ theme }) {
+  const d = theme.desi
   return (
     <section className="relative isolate overflow-hidden">
       <div className="relative mx-auto mt-2 max-w-[1600px] px-4 sm:px-8 lg:px-14">
-        <div className="relative overflow-hidden rounded-3xl">
-          {/* cover */}
-          {theme.image ? (
-            <img src={theme.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
-          ) : (
-            <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient}`} />
+        <div className="desi-frame relative overflow-hidden rounded-3xl">
+          {/* jewel-tone gradient base, tinted with the category cover */}
+          <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${d.from}, ${d.to})` }} />
+          {theme.image && (
+            <img src={theme.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-25 mix-blend-overlay" />
           )}
-          <div className="absolute inset-0 bg-black/55" />
+          {/* block-print dot veil */}
+          <div
+            className="absolute inset-0 opacity-[0.18]"
+            style={{
+              backgroundImage: 'radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1.4px)',
+              backgroundSize: '20px 20px',
+            }}
+          />
+          {/* corner mandalas */}
+          <Mandala className="pointer-events-none absolute -left-10 -top-10 h-44 w-44 text-white/20" />
+          <Mandala className="pointer-events-none absolute -bottom-12 -right-10 h-52 w-52 text-white/15" />
+
           <div className="relative flex flex-col items-center gap-5 px-6 py-20 text-center sm:py-24">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.35em]" style={{ ...SANS, color: d.accent }}>
+              ✦ Shortly Edition ✦
+            </span>
             <h1
               className="text-[clamp(2.5rem,9vw,120px)] font-extrabold uppercase leading-none tracking-tight text-white"
-              style={SERIF}
+              style={{ ...SERIF, textShadow: '0 2px 24px rgba(0,0,0,0.35)' }}
             >
               {theme.label}
             </h1>
-            <p className="max-w-2xl text-[15px] leading-relaxed text-white/85" style={SANS}>
+            <div className="h-[3px] w-28 rounded-full" style={{ background: d.accent }} />
+            <p className="max-w-2xl text-[15px] leading-relaxed text-white/90" style={SANS}>
               {theme.desc}
             </p>
             <Link
               to="/newsletter#subscribe"
-              className="rounded-full bg-[#7900d9] px-6 py-3 text-[13px] font-semibold uppercase tracking-wide text-white shadow-[0_10px_30px_rgba(121,0,217,0.45)]"
-              style={SANS}
+              className="rounded-full px-7 py-3 text-[13px] font-bold uppercase tracking-wide text-[#3a1206] shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+              style={{ ...SANS, background: d.accent }}
             >
               Subscribe
             </Link>
           </div>
+
+          {/* jhalar trim hanging from the hero's bottom edge */}
+          <div className="desi-jhalar absolute inset-x-0 bottom-0" style={{ '--jhalar': d.accent }} />
         </div>
       </div>
     </section>
@@ -114,40 +152,51 @@ function SearchTabs({ tab, setTab, query, setQuery }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search stories…"
-          className="w-full rounded-full border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm text-gray-800 outline-none focus:border-gray-300"
+          className="w-full rounded-full border border-[#c9a227]/45 bg-[#fffdf5] py-3 pl-11 pr-4 text-sm text-gray-800 outline-none focus:border-[#c9a227]"
           style={SANS}
         />
       </div>
-      <div className="flex items-center gap-2" style={SANS}>
-        {TABS.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`rounded-full px-4 py-2 text-[13px] font-medium transition-colors ${
-              tab === t.key ? 'bg-[#7900d9] text-white' : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="flex items-center gap-2 rounded-full border border-[#c9a227]/40 bg-[#fffdf5] p-1" style={SANS}>
+        {TABS.map((t) => {
+          const on = tab === t.key
+          return (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`rounded-full px-4 py-2 text-[13px] font-semibold transition-colors ${
+                on ? 'text-white' : 'text-[#7b1e3b] hover:text-[#d81b60]'
+              }`}
+              style={on ? { background: 'linear-gradient(135deg, #F4A300, #D81B60)' } : undefined}
+            >
+              {t.label}
+            </button>
+          )
+        })}
       </div>
     </div>
   )
 }
 
-function FeaturedCard({ category, article }) {
+// Rotating jewel bands so the grid reads "more is more" without losing order.
+const DESI_BANDS = ['#F4A300', '#D81B60', '#0E7C7B', '#C2410C', '#5B2A86', '#1B5E3F']
+
+function FeaturedCard({ category, article, band }) {
   return (
     <Link
       to={`/newsletter/${category}/${article.id}`}
-      className="block rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md sm:p-8"
+      className="desi-card desi-frame block rounded-2xl p-6 transition-transform hover:-translate-y-0.5 sm:p-8"
+      style={{ '--band': band }}
     >
-      <span className="inline-block rounded bg-purple-100 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-purple-700" style={SANS}>
-        Long Story
+      <span
+        className="inline-block rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white"
+        style={{ ...SANS, background: band }}
+      >
+        ✦ Long Story
       </span>
       <h3 className="mt-4 text-2xl font-bold leading-snug text-gray-900 sm:text-3xl" style={SERIF}>
         {article.headline}
       </h3>
-      <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-gray-600" style={SANS}>
+      <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-gray-700" style={SANS}>
         {article.summary}
       </p>
       <div className="mt-5">
@@ -157,16 +206,17 @@ function FeaturedCard({ category, article }) {
   )
 }
 
-function StoryCard({ category, article }) {
+function StoryCard({ category, article, band }) {
   return (
     <Link
       to={`/newsletter/${category}/${article.id}`}
-      className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+      className="desi-card flex h-full flex-col rounded-2xl p-5 shadow-sm transition-transform hover:-translate-y-0.5"
+      style={{ '--band': band }}
     >
       <h4 className="text-[17px] font-bold leading-snug text-gray-900" style={SERIF}>
         {article.headline}
       </h4>
-      <p className="mt-2 line-clamp-4 flex-1 text-[13px] leading-relaxed text-gray-600" style={SANS}>
+      <p className="mt-2 line-clamp-4 flex-1 text-[13px] leading-relaxed text-gray-700" style={SANS}>
         {article.summary}
       </p>
       <div className="mt-4">
@@ -178,9 +228,11 @@ function StoryCard({ category, article }) {
 
 function DateHeading({ children }) {
   return (
-    <h2 className="mb-5 mt-12 text-[15px] font-bold text-gray-900" style={SANS}>
-      {children}
-    </h2>
+    <div className="desi-divider mb-6 mt-12">
+      <span className="desi-divider__motif" style={SANS}>
+        ❖ {children} ❖
+      </span>
+    </div>
   )
 }
 
@@ -211,27 +263,30 @@ function Feed({ category, articles }) {
             No stories match your search.
           </p>
         )}
-        {groups.map(([label, items], gi) => {
-          const featured = gi === 0 ? items[0] : null
-          const rest = gi === 0 ? items.slice(1) : items
-          return (
-            <section key={label}>
-              <DateHeading>{label}</DateHeading>
-              {featured && (
-                <div className="mb-6">
-                  <FeaturedCard category={category} article={featured} />
-                </div>
-              )}
-              {rest.length > 0 && (
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {rest.map((a) => (
-                    <StoryCard key={a.id} category={category} article={a} />
-                  ))}
-                </div>
-              )}
-            </section>
-          )
-        })}
+        {(() => {
+          let n = 0
+          return groups.map(([label, items], gi) => {
+            const featured = gi === 0 ? items[0] : null
+            const rest = gi === 0 ? items.slice(1) : items
+            return (
+              <section key={label}>
+                <DateHeading>{label}</DateHeading>
+                {featured && (
+                  <div className="mb-6">
+                    <FeaturedCard category={category} article={featured} band={DESI_BANDS[n++ % DESI_BANDS.length]} />
+                  </div>
+                )}
+                {rest.length > 0 && (
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {rest.map((a) => (
+                      <StoryCard key={a.id} category={category} article={a} band={DESI_BANDS[n++ % DESI_BANDS.length]} />
+                    ))}
+                  </div>
+                )}
+              </section>
+            )
+          })
+        })()}
       </div>
     </>
   )
@@ -257,8 +312,8 @@ function Reading({ category, articles, articleId }) {
                     to={`/newsletter/${category}/${a.id}`}
                     className={`rounded-xl border p-4 transition-colors ${
                       a.id === article.id
-                        ? 'border-purple-300 bg-purple-50/60'
-                        : 'border-gray-100 bg-white hover:border-gray-200'
+                        ? 'border-[#c9a227] bg-[#fff7e0]'
+                        : 'border-[#c9a227]/25 bg-[#fffdf5] hover:border-[#c9a227]/50'
                     }`}
                   >
                     <h4 className="text-[15px] font-bold leading-snug text-gray-900" style={SERIF}>
@@ -277,7 +332,7 @@ function Reading({ category, articles, articleId }) {
         {/* right: open article */}
         <article className="min-w-0">
           <div className="mb-4 flex items-center gap-2 text-[12px] text-gray-500" style={SANS}>
-            <Link to={`/newsletter/${category}`} className="font-medium text-[#7900d9] hover:underline">
+            <Link to={`/newsletter/${category}`} className="font-medium text-[#d81b60] hover:underline">
               ← All {themeFor(category).label} stories
             </Link>
           </div>
@@ -316,8 +371,8 @@ function Reading({ category, articles, articleId }) {
             href={article.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#7900d9] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_8px_24px_rgba(121,0,217,0.35)]"
-            style={SANS}
+            className="mt-8 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-bold text-white shadow-[0_8px_24px_rgba(216,27,96,0.35)]"
+            style={{ ...SANS, background: 'linear-gradient(135deg, #F4A300, #D81B60)' }}
           >
             Read the full story at {article.source}
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -360,7 +415,7 @@ export default function CategoryNewsPage() {
   const articles = data?.articles || []
 
   return (
-    <div className="min-h-screen bg-[#faf9f6] text-gray-900">
+    <div className="desi-paper min-h-screen text-gray-900">
       <NewsletterNav />
       <div className="pt-24 sm:pt-28">
         <CategoryHero theme={theme} />
