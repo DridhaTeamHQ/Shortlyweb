@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { useTheme } from '../context/ThemeContext'
+import { Link } from 'react-router-dom'
 import { triggerHaptic } from '../utils/haptics'
 import { NEWSLETTER_THEMES } from '../lib/newsletterThemes'
 
@@ -25,73 +25,68 @@ export default function ThemeSelector({ selected = [], onToggle }) {
         {NEWSLETTER_THEMES.map((cat, i) => {
           const active = selected.includes(cat.slug)
           return (
-            <motion.button
-              type="button"
+            <motion.div
               key={cat.slug}
-              onClick={() => { triggerHaptic('light'); onToggle?.(cat.slug) }}
               whileHover={{ y: -4 }}
               transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-              className={`group text-left rounded-2xl p-4 flex flex-col gap-4 transition-colors ${
-                dark
-                  ? `bg-white/[0.04] border ${active ? 'border-purple-400/60' : 'border-white/10 hover:border-white/20'}`
-                  : `bg-[#faf9f6] border ${active ? 'border-purple-400' : 'border-transparent hover:border-gray-200'}`
+              className={`group text-left rounded-2xl p-4 flex flex-col gap-4 transition-colors bg-[#faf9f6] border ${
+                active ? 'border-purple-400' : 'border-transparent hover:border-gray-200'
               }`}
             >
-              {/* Number label */}
-              <div className="w-full">
-                <div className={`h-px w-full ${dark ? 'bg-white/10' : 'bg-gray-200'}`} />
-                <div className="pt-2">
-                  <span className={`text-sm font-medium ${dark ? 'text-gray-400' : 'text-gray-500'}`}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <div className={`mt-1 h-px w-6 opacity-30 ${dark ? 'bg-white/60' : 'bg-gray-500'}`} />
-                </div>
-              </div>
-
-              {/* Cover */}
-              <div className="relative h-[236px] w-full overflow-hidden rounded-xl">
-                {cat.image ? (
-                  <img
-                    src={cat.image}
-                    alt={cat.label}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient}`}>
-                    <div
-                      className="absolute inset-0 opacity-25"
-                      style={{
-                        backgroundImage: 'radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px)',
-                        backgroundSize: '16px 16px',
-                      }}
-                    />
-                    <span className="absolute bottom-4 left-5 text-white/30 font-black leading-none text-6xl select-none">
-                      {cat.label[0]}
-                    </span>
+              {/* Cover + title link to the category's stories feed */}
+              <Link to={`/newsletter/${cat.slug}`} className="flex flex-col gap-4">
+                {/* Number label */}
+                <div className="w-full">
+                  <div className="h-px w-full bg-gray-200" />
+                  <div className="pt-2">
+                    <span className="text-sm font-medium text-gray-500">{String(i + 1).padStart(2, '0')}</span>
+                    <div className="mt-1 h-px w-6 opacity-30 bg-gray-500" />
                   </div>
-                )}
-              </div>
+                </div>
 
-              {/* Content */}
-              <div className="flex flex-col gap-3">
-                <h3 className={`text-3xl font-bold leading-[1.1] ${dark ? 'text-white' : 'text-gray-900'}`}>
-                  {cat.label}
-                </h3>
-                <p className={`text-base leading-relaxed ${dark ? 'text-gray-300' : 'text-gray-600'}`}>
-                  {cat.desc}
-                </p>
-
-                <span className={`inline-flex items-center gap-2 py-1 text-base font-medium ${active ? 'text-purple-500' : dark ? 'text-gray-200' : 'text-gray-900'}`}>
-                  {active ? (
-                    <svg className="h-[22px] w-[22px]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.7 7.7l-5.7 5.7a1 1 0 01-1.4 0L7.3 13a1 1 0 011.4-1.4l1.6 1.6 5-5a1 1 0 011.4 1.4z" /></svg>
+                {/* Cover */}
+                <div className="relative h-[236px] w-full overflow-hidden rounded-xl">
+                  {cat.image ? (
+                    <img
+                      src={cat.image}
+                      alt={cat.label}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
                   ) : (
-                    <svg className="h-[22px] w-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9" /><path d="M12 8v8M8 12h8" strokeLinecap="round" /></svg>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient}`}>
+                      <div
+                        className="absolute inset-0 opacity-25"
+                        style={{
+                          backgroundImage: 'radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px)',
+                          backgroundSize: '16px 16px',
+                        }}
+                      />
+                      <span className="absolute bottom-4 left-5 text-white/30 font-black leading-none text-6xl select-none">
+                        {cat.label[0]}
+                      </span>
+                    </div>
                   )}
-                  {active ? 'Added to wrap' : 'Add to wrap'}
-                </span>
-              </div>
-            </motion.button>
+                </div>
+
+                <h3 className="text-3xl font-bold leading-[1.1] text-gray-900">{cat.label}</h3>
+                <p className="text-base leading-relaxed text-gray-600">{cat.desc}</p>
+              </Link>
+
+              {/* Add-to-wrap toggle (subscription selection) */}
+              <button
+                type="button"
+                onClick={() => { triggerHaptic('light'); onToggle?.(cat.slug) }}
+                className={`inline-flex items-center gap-2 py-1 text-base font-medium ${active ? 'text-purple-500' : 'text-gray-900 hover:text-purple-500'}`}
+              >
+                {active ? (
+                  <svg className="h-[22px] w-[22px]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.7 7.7l-5.7 5.7a1 1 0 01-1.4 0L7.3 13a1 1 0 011.4-1.4l1.6 1.6 5-5a1 1 0 011.4 1.4z" /></svg>
+                ) : (
+                  <svg className="h-[22px] w-[22px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9" /><path d="M12 8v8M8 12h8" strokeLinecap="round" /></svg>
+                )}
+                {active ? 'Added to wrap' : 'Add to wrap'}
+              </button>
+            </motion.div>
           )
         })}
       </div>

@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage'
 import TermsPage from './pages/TermsPage'
 import PrivacyPage from './pages/PrivacyPage'
 import NewsletterPage from './pages/NewsletterPage'
+import CategoryNewsPage from './pages/CategoryNewsPage'
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/newsletter" element={<NewsletterPage />} />
+        <Route path="/newsletter/:category" element={<CategoryNewsPage />} />
+        <Route path="/newsletter/:category/:articleId" element={<CategoryNewsPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
       </Routes>
