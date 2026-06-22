@@ -50,7 +50,7 @@ export default function NewsletterNav() {
     <header className="fixed inset-x-0 top-0 z-40 pt-3 sm:pt-4" style={ROBOTO}>
       <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
         {/* Frosted glass bar, tinted to the cream page so it blends in */}
-        <div className="flex h-16 items-center justify-between rounded-full border border-white/60 bg-[#fbfaf7]/55 px-4 shadow-[0_8px_32px_rgba(17,12,5,0.08)] backdrop-blur-xl sm:px-6">
+        <div className="flex h-16 items-center justify-between rounded-full border border-white/25 bg-[#efe6d4]/30 px-4 shadow-[0_8px_28px_rgba(17,12,5,0.07)] backdrop-blur-md sm:px-6">
           {/* Brand */}
           <button
             onClick={() => goAnchor(null)}
