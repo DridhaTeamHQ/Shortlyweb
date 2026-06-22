@@ -20,7 +20,7 @@ const FAN = [
 
 export default function NewsletterHero() {
   return (
-    <section className="relative overflow-hidden bg-[#faf9f6] pt-24 pb-16 sm:pt-28">
+    <section className="relative overflow-hidden bg-[#faf9f6] pt-28 pb-16 sm:pt-32">
       {/* Vintage newspaper texture (Figma node 1:1293) faded into the cream bg */}
       <img
         src="/newsletter/hero/newspaper.jpg"
