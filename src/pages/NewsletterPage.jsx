@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import NewsletterHero from '../components/NewsletterHero'
-import NewsletterBanner from '../components/NewsletterBanner'
 import ThemeSelector from '../components/ThemeSelector'
 import NewsletterSubscribe from '../components/NewsletterSubscribe'
+import ScrollStack, { ScrollStackItem } from '../components/ScrollStack'
 
 // The newsletter page follows the light Figma design (frame 1:1292):
-//   Hero  ->  Select Your Theme  ->  Subscribe  ->  Footer
+//   Hero (+ banner scroll-stack)  ->  Select Your Theme  ->  Subscribe  ->  Footer
 const NewsletterPage = () => {
   const [subCategories, setSubCategories] = useState([])
   const toggleSubCategory = (slug) =>
@@ -17,10 +17,33 @@ const NewsletterPage = () => {
     <div className="min-h-screen bg-[#faf9f6] text-gray-900">
       <Navbar />
 
-      <NewsletterHero />
+      {/* Hero + banner stack: scrolling pins/scales the hero back while the
+          collage banner rises and stacks over it. */}
+      <ScrollStack
+        useWindowScroll
+        itemDistance={60}
+        itemStackDistance={24}
+        itemScale={0.04}
+        baseScale={0.9}
+        stackPosition="16%"
+        scaleEndPosition="6%"
+      >
+        <ScrollStackItem>
+          <NewsletterHero />
+        </ScrollStackItem>
 
-      {/* Collage banner with scroll parallax */}
-      <NewsletterBanner />
+        <ScrollStackItem>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
+              <img
+                src="/newsletter/banner.png"
+                alt="Shortly — national, finance, sports, lifestyle, tech and more"
+                className="block w-full h-auto"
+              />
+            </div>
+          </div>
+        </ScrollStackItem>
+      </ScrollStack>
 
       <main className="relative">
         <ThemeSelector selected={subCategories} onToggle={toggleSubCategory} />
