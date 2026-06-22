@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Navbar from '../components/Navbar'
+import NewsletterNav from '../components/NewsletterNav'
 import Footer from '../components/Footer'
 import NewsletterHero from '../components/NewsletterHero'
 import ThemeSelector from '../components/ThemeSelector'
@@ -16,7 +16,7 @@ const NewsletterPage = () => {
 
   return (
     <div className="min-h-screen bg-[#faf9f6] text-gray-900">
-      <Navbar />
+      <NewsletterNav />
 
       {/* Hero pins (native sticky) and gently recedes while the collage banner
           rises and covers it — see NewsletterPage.css. */}
@@ -36,7 +36,9 @@ const NewsletterPage = () => {
       </div>
 
       <main className="nl-after">
-        <ThemeSelector selected={subCategories} onToggle={toggleSubCategory} />
+        <div id="themes" className="scroll-mt-24">
+          <ThemeSelector selected={subCategories} onToggle={toggleSubCategory} />
+        </div>
 
         <section id="subscribe" className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 scroll-mt-28">
           <div className="mb-6">
