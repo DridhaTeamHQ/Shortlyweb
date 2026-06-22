@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import NewsletterHero from '../components/NewsletterHero'
+import NewsletterBanner from '../components/NewsletterBanner'
 import ThemeSelector from '../components/ThemeSelector'
 import NewsletterSubscribe from '../components/NewsletterSubscribe'
 
@@ -18,16 +19,8 @@ const NewsletterPage = () => {
 
       <NewsletterHero />
 
-      {/* Collage banner */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4">
-        <div className="overflow-hidden rounded-3xl shadow-sm">
-          <img
-            src="/newsletter/banner.png"
-            alt="Shortly — national, finance, sports, lifestyle, tech and more"
-            className="block w-full h-auto"
-          />
-        </div>
-      </section>
+      {/* Collage banner with scroll parallax */}
+      <NewsletterBanner />
 
       <main className="relative">
         <ThemeSelector selected={subCategories} onToggle={toggleSubCategory} />
