@@ -23,8 +23,8 @@ const NewsletterPage = () => {
         useWindowScroll
         itemDistance={60}
         itemStackDistance={24}
-        itemScale={0.04}
-        baseScale={0.9}
+        itemScale={0.03}
+        baseScale={1}
         stackPosition="16%"
         scaleEndPosition="6%"
       >

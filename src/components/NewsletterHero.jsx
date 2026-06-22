@@ -34,7 +34,13 @@ export default function NewsletterHero() {
         {/* Title */}
         <h1
           className="text-center font-extrabold leading-none text-black tracking-tight text-[clamp(2.75rem,12vw,186px)]"
-          style={SERIF}
+          style={{
+            ...SERIF,
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            WebkitFontSmoothing: 'antialiased',
+            textRendering: 'geometricPrecision',
+          }}
         >
           NEWSLETTER
         </h1>
