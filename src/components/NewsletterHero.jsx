@@ -39,35 +39,6 @@ export default function NewsletterHero() {
           NEWSLETTER
         </h1>
 
-        {/* Fanned cards */}
-        <div className="relative h-[230px] w-full flex justify-center">
-          <div className="relative h-[230px] w-[855px] origin-top scale-[0.42] sm:scale-[0.62] md:scale-[0.85] lg:scale-100">
-            {FAN.map((c, i) => (
-              <div
-                key={i}
-                className="absolute h-[196px] w-[156px] overflow-hidden rounded-2xl"
-                style={{
-                  left: `${c.left}px`,
-                  top: `${c.top}px`,
-                  transform: `rotate(${c.rot}deg)`,
-                  boxShadow: '-12px 12px 16px rgba(0,0,0,0.45)',
-                }}
-              >
-                <img src={c.img} alt="" className="h-full w-full object-cover" />
-              </div>
-            ))}
-            {/* Floating category pill */}
-            <div
-              className="absolute"
-              style={{ left: '330px', top: '186px', transform: 'rotate(-5.3deg)' }}
-            >
-              <span className="inline-flex items-center rounded-full bg-black px-4 py-2 text-[15px] font-semibold text-white" style={SANS}>
-                Tech &amp; AI
-              </span>
-            </div>
-          </div>
-        </div>
-
         {/* Tagline */}
         <p className="max-w-2xl text-center text-[18px] leading-[1.56] text-black" style={SANS}>
           A distilled, premium curation of the world&rsquo;s most significant movements in
