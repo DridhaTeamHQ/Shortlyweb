@@ -21,13 +21,15 @@ const FAN = [
 export default function NewsletterHero() {
   return (
     <section className="relative overflow-hidden bg-[#faf9f6] pt-24 pb-16 sm:pt-28">
-      {/* Texture + white fade */}
+      {/* Vintage newspaper texture (Figma node 1:1293) faded into the cream bg */}
       <img
-        src="/newsletter/hero/texture.png"
+        src="/newsletter/hero/newspaper.jpg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-multiply"
       />
+      {/* Soften it toward the top and fade to cream at the bottom so the type stays crisp */}
+      <div className="pointer-events-none absolute inset-0 bg-[#faf9f6]/35" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#faf9f6]" />
 
       <div className="relative z-10 flex flex-col items-center gap-8 px-4">

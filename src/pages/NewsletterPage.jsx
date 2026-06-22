@@ -26,15 +26,12 @@ const NewsletterPage = () => {
         </div>
 
         <div className="nl-banner">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5 bg-[#faf9f6]">
-              <img
-                src="/newsletter/banner.png"
-                alt="Shortly — national, finance, sports, lifestyle, tech and more"
-                className="block w-full h-auto"
-              />
-            </div>
-          </div>
+          {/* Edge-to-edge collage banner (full-bleed) */}
+          <img
+            src="/newsletter/banner.png"
+            alt="Shortly — national, finance, sports, lifestyle, tech and more"
+            className="block w-full h-auto"
+          />
         </div>
       </div>
 
