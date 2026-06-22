@@ -329,6 +329,10 @@ async function runCategory(catId) {
 
   let articles = scored.map((s, i) => {
     const w = written[i] || {}
+    // Distinct outlets that covered this story (first link kept per outlet).
+    const srcMap = new Map()
+    for (const m of s.members) if (m.source && !srcMap.has(m.source)) srcMap.set(m.source, m.link || '')
+    const sources = [...srcMap.entries()].map(([name, url]) => ({ name, url }))
     // A real summary: present, substantial, and not just an echo of the headline.
     const hn = String(w.headline || s.headlines[0]).replace(/[^a-z0-9]/gi, '').toLowerCase()
     const sn = String(w.summary || '').replace(/[^a-z0-9]/gi, '').toLowerCase()
@@ -346,6 +350,7 @@ async function runCategory(catId) {
       category,
       tags: Array.isArray(w.tags) ? w.tags.slice(0, 3) : [],
       sourceCount: s.sourceCount,
+      sources,
       level: levelFor(s.sourceCount),
       importance,
       kind,
