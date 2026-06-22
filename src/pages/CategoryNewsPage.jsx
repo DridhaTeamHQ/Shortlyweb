@@ -81,8 +81,11 @@ function Mandala({ className }) {
   )
 }
 
+// Fallback palette so a theme without a `desi` field never crashes the hero.
+const DESI_FALLBACK = { from: '#7B1E3B', to: '#3A1206', accent: '#F4A300' }
+
 function CategoryHero({ theme }) {
-  const d = theme.desi
+  const d = theme.desi || DESI_FALLBACK
   return (
     <section className="relative isolate overflow-hidden">
       <div className="relative mx-auto mt-2 max-w-[1600px] px-4 sm:px-8 lg:px-14">
