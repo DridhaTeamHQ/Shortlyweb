@@ -18,6 +18,17 @@ const NewsletterPage = () => {
 
       <NewsletterHero />
 
+      {/* Collage banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4">
+        <div className="overflow-hidden rounded-3xl shadow-sm">
+          <img
+            src="/newsletter/banner.png"
+            alt="Shortly — national, finance, sports, lifestyle, tech and more"
+            className="block w-full h-auto"
+          />
+        </div>
+      </section>
+
       <main className="relative">
         <ThemeSelector selected={subCategories} onToggle={toggleSubCategory} />
 
