@@ -12,9 +12,9 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
-    /* Force GPU acceleration */
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    /* NOTE: do NOT put `transform` here — a transform on <html> makes it the
+       containing block for position:fixed descendants, which breaks every fixed
+       navbar (it scrolls away instead of pinning). */
   }
   
   body {
