@@ -117,7 +117,7 @@ export default function NewsletterSubscribe({ categories: categoriesProp, onCate
     return (
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="lg:sticky lg:top-24 lg:self-start"><EditionPreview rhythm={rhythm} days={days} source={source} categories={categories} name={name} summary={summary} /></div>
-        <div className="rounded-[24px] border border-black/10 bg-white p-8 text-center sm:p-10" style={SANS}>
+        <div className="rounded-[24px] border border-black/10 bg-[#fbf7f0] p-8 text-center sm:p-10" style={SANS}>
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#f4e9ff] text-[#7900d9]">
             <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
@@ -136,9 +136,9 @@ export default function NewsletterSubscribe({ categories: categoriesProp, onCate
       </div>
 
       {/* RIGHT — Figma-exact builder card */}
-      <form onSubmit={onSubmit} className="overflow-hidden rounded-[24px] border border-black/10 bg-white" style={SANS}>
+      <form onSubmit={onSubmit} className="overflow-hidden rounded-[24px] border border-black/10 bg-[#fbf7f0]" style={SANS}>
         {/* Schedule header */}
-        <div className="flex items-center gap-4 border-b border-black/10 bg-[#faf9f6] px-8 py-6">
+        <div className="flex items-center gap-4 border-b border-black/10 bg-[#f4ede1] px-8 py-6">
           <CalendarIcon className="h-6 w-6 text-black" />
           <h3 className="text-[22px] font-semibold text-black">Schedule</h3>
         </div>
