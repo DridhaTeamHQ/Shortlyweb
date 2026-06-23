@@ -29,8 +29,8 @@ export default function ThemeSelector({ selected = [], onToggle }) {
               key={cat.slug}
               whileHover={{ y: -4 }}
               transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-              className={`group text-left rounded-2xl p-4 flex flex-col gap-4 transition-colors bg-[#faf9f6] border ${
-                active ? 'border-purple-400' : 'border-transparent hover:border-gray-200'
+              className={`group text-left rounded-2xl p-4 flex flex-col gap-4 transition-colors bg-[#fbf7f0] border ${
+                active ? 'border-[#7900d9]' : 'border-black/5 hover:border-black/15'
               }`}
             >
               {/* Cover + title link to the category's stories feed */}
